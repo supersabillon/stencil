@@ -12,6 +12,7 @@ export {
   mockStencilSystem,
   mockWindow,
 } from './mocks';
+export { MockCompiler, initCompilerConfig, mockCreateCompiler, mockCompilerRoot } from './mock-compiler';
 export {
   MockHeaders,
   MockRequest,

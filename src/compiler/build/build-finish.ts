@@ -51,7 +51,7 @@ const buildDone = async (
   if (buildCtx.hasFinished && buildCtx.buildResults) {
     // we've already marked this build as finished and
     // already created the build results, just return these
-    return buildCtx.buildResults;
+    return buildCtx;
   }
 
   // create the build results data
@@ -107,7 +107,7 @@ const buildDone = async (
     }
 
     // emit a buildFinish event for anyone who cares
-    compilerCtx.events.emit('buildFinish', buildCtx.buildResults);
+    compilerCtx.events.emit('buildFinish', buildCtx);
 
     // write all of our logs to disk if config'd to do so
     // do this even if there are errors or not the active build
@@ -128,7 +128,7 @@ const buildDone = async (
     }
   }
 
-  return buildCtx.buildResults;
+  return buildCtx;
 };
 
 const logHmr = (logger: d.Logger, buildCtx: d.BuildCtx) => {
