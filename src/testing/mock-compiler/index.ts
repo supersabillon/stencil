@@ -34,9 +34,7 @@ const originalStatSync = sys.statSync;
 /**
  * The root path of the compiler instance. Useful when writing new in-memory files
  */
-export const mockCompilerRoot: mockCompilerRoot = path.resolve(__dirname);
-// idk what's happening here. No declaration is made (so throws error) unless I export this :/
-export type mockCompilerRoot = string;
+export const mockCompilerRoot: string = path.resolve(__dirname);
 
 /**
  * A testing utility to create a suitable environement to test stencil's `compiler` functionality.
