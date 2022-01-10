@@ -3,7 +3,7 @@ import { mockCreateCompiler, MockCompiler } from '../../../testing/mock-compiler
 import path from 'path';
 import { getLazyBuildConditionals } from '../../output-targets/dist-lazy/lazy-build-conditionals';
 
-describe('build-conditionals', () => {
+xdescribe('build-conditionals', () => {
   // jest.setTimeout(25000);
   let compiler: MockCompiler;
   let config: d.Config = {};

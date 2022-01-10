@@ -2,7 +2,7 @@ import type * as d from '@stencil/core/declarations';
 import { mockCreateCompiler, MockCompiler, mockCompilerRoot } from '../../../testing/mock-compiler';
 import path from 'path';
 
-describe('component-styles', () => {
+xdescribe('component-styles', () => {
   // jest.setTimeout(25000);
   let compiler: MockCompiler;
 
@@ -85,7 +85,7 @@ describe('component-styles', () => {
     let hasIos = false;
     let hasMd = false;
 
-    r.filesWritten.forEach((f) => {
+    compiler.compilerCtx.lastBuildResults.filesWritten.forEach((f) => {
       const content = compiler.sys.readFileSync(f);
       if (content.includes(`body{font-family:Helvetica}`)) {
         hasIos = true;
