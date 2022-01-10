@@ -23,10 +23,40 @@ export function shuffleArray(array: any[]) {
   return array;
 }
 
-export function expectFiles(fs: d.InMemoryFileSystem, filePaths: string[]) {
-  filePaths.forEach((filePath) => {
-    fs.sys.statSync(filePath);
-  });
+/**
+ * Testing utility that ensures each of the provided `filePaths` exist
+ * @param sys the filesystem implementation to use in checking for each file
+ * @param filePaths the files to verify the existence of
+ */
+export function expectFiles(
+  sys: d.InMemoryFileSystem,
+  filePaths: string[]
+): ReadonlyArray<{
+  exists: boolean;
+  isFile: boolean;
+  isDirectory: boolean;
+}> {
+  const results: Array<any> = filePaths
+    .map((filePath) => {
+      return {
+        filePath,
+        statResults: sys.statSync(filePath),
+      };
+    })
+    .filter(
+      (syncResult: { filePath: string; statResults: { exists: boolean; isFile: boolean; isDirectory: boolean } }) =>
+        !syncResult.statResults.exists,
+      [] as any
+    );
+
+  if (results.length > 0) {
+    fail(
+      `The following files were expected, but could not be found: \n${results
+        .map((res: any) => '-' + res.filePath)
+        .join('\n')}`
+    );
+  }
+  return results;
 }
 
 export function doNotExpectFiles(fs: d.InMemoryFileSystem, filePaths: string[]) {
