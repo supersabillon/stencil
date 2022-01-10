@@ -23,13 +23,13 @@ let currentCompiler: Promise<any> = null;
 // cache some original file systems functions that we will overwrite.
 // We use them to continue to refer to real, on-disk files
 const sys = createNodeSys({ process: process });
-const ogReadFile = sys.readFile;
-const ogReadFileSync = sys.readFileSync;
-const ogReadDir = sys.readDir;
-const ogReadDirSync = sys.readDirSync;
-const ogCopyFile = sys.copyFile;
-const ogStat = sys.stat;
-const ogStatSync = sys.statSync;
+const originalReadFile = sys.readFile;
+const originalReadFileSync = sys.readFileSync;
+const originalReadDir = sys.readDir;
+const originalReadDirSync = sys.readDirSync;
+const originalCopyFile = sys.copyFile;
+const originalStat = sys.stat;
+const originalStatSync = sys.statSync;
 
 /**
  * The root path of the compiler instance. Useful when writing new in-memory files
@@ -153,7 +153,7 @@ function initCompilerConfig(setupFs = true): d.Config {
  * allows reads to be done of real files whilst any writes are done in memory.
  * @returns a file system that reads real files and writes all new files to memory
  */
-function patchHybridFs() {
+function patchHybridFs(): d.CompilerSystem {
   const memSys = createSystem();
 
   sys.getCompilerExecutingPath = () => path.join(mockCompilerRoot, '../../../compiler/stencil.js');
@@ -167,23 +167,23 @@ function patchHybridFs() {
   sys.readFile = async (p: string, encoding?: any) => {
     const foundReadFile = await memSys.readFile(p, encoding);
     if (foundReadFile) return foundReadFile;
-    else return ogReadFile(p, encoding);
+    else return originalReadFile(p, encoding);
   };
   sys.readFileSync = (p: string, encoding?: any) => {
     const foundReadFile = memSys.readFileSync(p, encoding);
     if (foundReadFile) return foundReadFile;
-    else return ogReadFileSync(p, encoding);
+    else return originalReadFileSync(p, encoding);
   };
   sys.copyFile = async (src: string, dst: string) => {
     const foundReadFile = await memSys.readFile(src);
     if (foundReadFile) return memSys.copyFile(src, dst);
-    else return ogCopyFile(src, dst);
+    else return originalCopyFile(src, dst);
   };
   sys.readDir = async (p: string) => {
-    return [...(await ogReadDir(p)), ...(await memSys.readDir(p))];
+    return [...(await originalReadDir(p)), ...(await memSys.readDir(p))];
   };
   sys.readDirSync = (p: string) => {
-    return [...ogReadDirSync(p), ...memSys.readDirSync(p)];
+    return [...originalReadDirSync(p), ...memSys.readDirSync(p)];
   };
   sys.createDir = async (p: string, opts?: d.CompilerSystemCreateDirectoryOptions) => {
     return memSys.createDir(p, opts);
@@ -200,7 +200,7 @@ function patchHybridFs() {
     const foundReadFile = await memSys.stat(p);
     if (!foundReadFile.error) {
       return foundReadFile;
-    } else return ogStat(p);
+    } else return originalStat(p);
   };
   sys.statSync = (p: string) => {
     // in-memory fs doesn't seem to normalize query params
@@ -211,7 +211,7 @@ function patchHybridFs() {
     const foundReadFile = memSys.statSync(p);
     if (!foundReadFile.error) {
       return foundReadFile;
-    } else return ogStatSync(p);
+    } else return originalStatSync(p);
   };
   sys.removeFile = (p: string) => {
     return memSys.removeFile(p);
