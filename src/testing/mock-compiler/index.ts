@@ -39,36 +39,6 @@ export const mockCompilerRoot: mockCompilerRoot = path.resolve(__dirname);
 export type mockCompilerRoot = string;
 
 /**
- * Setup sensible compiler config defaults which can then be
- * overwritten and used with `mockCreateCompiler()`. Also creates a hybrid fileSystem;
- * reads from disk - required for typescript - and write to memory (`config.sys`).
- * @returns a stencil Config object
- */
-export function initCompilerConfig(setupFs = true) {
-  let config: d.Config = {};
-  const root = mockCompilerRoot;
-
-  config = mockConfig(setupFs ? patchHybridFs() : null, root);
-  config._internalTesting = true;
-  config.namespace = `TestApp`;
-  config.rootDir = root;
-  config.buildEs5 = false;
-  config.buildAppCore = false;
-  config.validateTypes = true;
-  config.sourceMap = false;
-  config.watch = false;
-  config.enableCache = false;
-  config.flags.watch = false;
-  config.flags.build = true;
-  config.outputTargets = [{ type: 'www' }];
-  config.srcDir = path.join(root, 'src');
-  config.tsconfig = path.join(root, 'tsconfig.json');
-  config.packageJsonFilePath = path.join(root, 'package.json');
-
-  return config;
-}
-
-/**
  * A testing utility to create a suitable environement to test stencil's `compiler` functionality.
  * Creates sensible config defaults & boilerplate files.
  * Also creates a hybrid fileSystem; reads from disk - required for typescript - and write to memory.
@@ -146,6 +116,37 @@ export async function mockCreateCompiler(userConfig: d.Config = {}): Promise<Moc
   // this helps consumers read files easily from our virtual root
   // config.rootDir = path.join(config.rootDir, config.namespace);
   return { config, ...compiler };
+}
+
+
+/**
+ * Setup sensible compiler config defaults which can then be
+ * overwritten and used with `mockCreateCompiler()`. Also creates a hybrid fileSystem;
+ * reads from disk - required for typescript - and write to memory (`config.sys`).
+ * @returns a stencil Config object
+ */
+function initCompilerConfig(setupFs = true) {
+  let config: d.Config = {};
+  const root = mockCompilerRoot;
+
+  config = mockConfig(setupFs ? patchHybridFs() : null, root);
+  config._internalTesting = true;
+  config.namespace = `TestApp`;
+  config.rootDir = root;
+  config.buildEs5 = false;
+  config.buildAppCore = false;
+  config.validateTypes = true;
+  config.sourceMap = false;
+  config.watch = false;
+  config.enableCache = false;
+  config.flags.watch = false;
+  config.flags.build = true;
+  config.outputTargets = [{ type: 'www' }];
+  config.srcDir = path.join(root, 'src');
+  config.tsconfig = path.join(root, 'tsconfig.json');
+  config.packageJsonFilePath = path.join(root, 'package.json');
+
+  return config;
 }
 
 /**
