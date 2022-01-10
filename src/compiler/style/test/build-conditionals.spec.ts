@@ -13,7 +13,7 @@ describe('build-conditionals', () => {
     config = compiler.config;
   });
   afterEach(async () => {
-    compiler.destroy();
+    await compiler.destroy();
   });
 
   it('should import function svg/slot build conditionals, remove on rebuild, and add back on rebuild', async () => {

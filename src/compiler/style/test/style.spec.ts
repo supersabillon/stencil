@@ -7,7 +7,7 @@ describe('component-styles', () => {
   let compiler: MockCompiler;
 
   afterEach(async () => {
-    compiler.destroy();
+    await compiler.destroy();
   });
 
   it('should escape unicode characters', async () => {
