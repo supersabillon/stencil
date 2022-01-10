@@ -3,7 +3,7 @@ import { mockCreateCompiler, MockCompiler, mockCompilerRoot } from '../../../tes
 import path from 'path';
 
 describe('component-styles', () => {
-  jest.setTimeout(25000);
+  // jest.setTimeout(25000);
   let compiler: MockCompiler;
 
   afterEach(async () => {
