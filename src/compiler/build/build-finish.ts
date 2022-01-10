@@ -10,7 +10,7 @@ import { relative } from 'path';
  * @param buildCtx the build context for the build being aborted
  * @returns the build results
  */
-export const buildFinish = async (buildCtx: d.BuildCtx): Promise<d.CompilerBuildResults> => {
+export const buildFinish = async (buildCtx: d.BuildCtx): Promise<d.BuildCtx> => {
   const results = await buildDone(buildCtx.config, buildCtx.compilerCtx, buildCtx, false);
 
   const buildLog: d.BuildLog = {
@@ -30,7 +30,7 @@ export const buildFinish = async (buildCtx: d.BuildCtx): Promise<d.CompilerBuild
  * @param buildCtx the build context for the build being aborted
  * @returns the build results
  */
-export const buildAbort = (buildCtx: d.BuildCtx): Promise<d.CompilerBuildResults> => {
+export const buildAbort = (buildCtx: d.BuildCtx): Promise<d.BuildCtx> => {
   return buildDone(buildCtx.config, buildCtx.compilerCtx, buildCtx, true);
 };
 
@@ -47,7 +47,7 @@ const buildDone = async (
   compilerCtx: d.CompilerCtx,
   buildCtx: d.BuildCtx,
   aborted: boolean
-): Promise<d.CompilerBuildResults> => {
+): Promise<d.BuildCtx> => {
   if (buildCtx.hasFinished && buildCtx.buildResults) {
     // we've already marked this build as finished and
     // already created the build results, just return these
