@@ -118,18 +118,15 @@ export async function mockCreateCompiler(userConfig: d.Config = {}): Promise<Moc
   return { config, ...compiler };
 }
 
-
 /**
- * Setup sensible compiler config defaults which can then be
- * overwritten and used with `mockCreateCompiler()`. Also creates a hybrid fileSystem;
- * reads from disk - required for typescript - and write to memory (`config.sys`).
- * @returns a stencil Config object
+ * Setup sensible compiler config defaults which can then be overwritten and used with `mockCreateCompiler()`. Also
+ * creates a hybrid fileSystem; reads from disk - required for typescript - and write to memory (`config.sys`).
+ * @returns a stencil `Config` object
  */
-function initCompilerConfig(setupFs = true) {
-  let config: d.Config = {};
+function initCompilerConfig(setupFs = true): d.Config {
   const root = mockCompilerRoot;
 
-  config = mockConfig(setupFs ? patchHybridFs() : null, root);
+  const config = mockConfig(setupFs ? patchHybridFs() : null, root);
   config._internalTesting = true;
   config.namespace = `TestApp`;
   config.rootDir = root;
