@@ -9,21 +9,22 @@ describe('outputTarget, dist', () => {
   let config: d.Config = {};
 
   it('default dist files', async () => {
-    config.buildAppCore = true;
+    config.buildAppCore = true; //todo
     config.buildEs5 = true;
     config.globalScript = path.join(mockCompilerRoot, 'src', 'global.ts');
     config.outputTargets = [{ type: 'dist' }];
+    config.sourceMap = true; //todo
 
     compiler = await mockCreateCompiler(config);
     config = compiler.config;
 
-    await config.sys.writeFile(path.join(mockCompilerRoot, 'polyfills', 'index.js'), `/* polyfills */`);
+    await config.sys.writeFile(path.join(mockCompilerRoot, 'polyfills', 'index.js'), `/* polyfills */`); //todo
     await config.sys.writeFile(
       config.packageJsonFilePath,
       `{
-      "module": "dist/index.js",
-      "main": "dist/index.cjs.js",
       "collection": "dist/collection/collection-manifest.json",
+      "main": "dist/index.cjs.js",
+      "module": "dist/index.js",
       "types": "dist/types/components.d.ts"
     }`
     );
@@ -52,10 +53,13 @@ describe('outputTarget, dist', () => {
 
     expectFiles(compiler.compilerCtx.fs, [
       path.join(mockCompilerRoot, 'dist', 'index.js'),
-      path.join(mockCompilerRoot, 'dist', 'index.mjs'),
-      path.join(mockCompilerRoot, 'dist', 'index.js.map'),
+      path.join(mockCompilerRoot, 'dist', 'index.cjs.js'),
+
+      // TODO cjs/
 
       path.join(mockCompilerRoot, 'dist', 'collection', 'collection-manifest.json'),
+      path.join(mockCompilerRoot, 'dist', 'collection', 'index.js'),
+      path.join(mockCompilerRoot, 'dist', 'collection', 'index.js.map'),
       path.join(mockCompilerRoot, 'dist', 'collection', 'components', 'cmp-a.js'),
       path.join(mockCompilerRoot, 'dist', 'collection', 'components', 'cmp-a.js.map'),
       path.join(mockCompilerRoot, 'dist', 'collection', 'components', 'cmp-a.ios.css'),
@@ -63,18 +67,23 @@ describe('outputTarget, dist', () => {
       path.join(mockCompilerRoot, 'dist', 'collection', 'global.js'),
       path.join(mockCompilerRoot, 'dist', 'collection', 'global.js.map'),
 
-      path.join(mockCompilerRoot, 'dist', 'esm', 'index.mjs'),
+      path.join(mockCompilerRoot, 'dist', 'esm', 'index.js'),
       path.join(mockCompilerRoot, 'dist', 'esm', 'index.js.map'),
-      path.join(mockCompilerRoot, 'dist', 'esm', 'loader.mjs'),
-      path.join(mockCompilerRoot, 'dist', 'esm-es5', 'index.mjs'),
-      path.join(mockCompilerRoot, 'dist', 'esm-es5', 'index.js.map'),
-      path.join(mockCompilerRoot, 'dist', 'esm-es5', 'loader.mjs'),
+      path.join(mockCompilerRoot, 'dist', 'esm', 'loader.js'),
       path.join(mockCompilerRoot, 'dist', 'esm', 'polyfills', 'index.js'),
       path.join(mockCompilerRoot, 'dist', 'esm', 'polyfills', 'index.js.map'),
 
+      path.join(mockCompilerRoot, 'dist', 'esm-es5', 'index.js'),
+      path.join(mockCompilerRoot, 'dist', 'esm-es5', 'index.js.map'),
+      path.join(mockCompilerRoot, 'dist', 'esm-es5', 'loader.js'),
+
       path.join(mockCompilerRoot, 'dist', 'loader'),
 
-      path.join(mockCompilerRoot, 'dist', 'types'),
+      path.join(mockCompilerRoot, 'dist', 'types', 'components', 'cmp-a.d.ts'),
+      path.join(mockCompilerRoot, 'dist', 'types', 'components.d.ts'),
+      path.join(mockCompilerRoot, 'dist', 'types', 'global.d.ts'),
+      path.join(mockCompilerRoot, 'dist', 'types', 'index.d.ts'),
+      path.join(mockCompilerRoot, 'dist', 'types', 'stencil-public-runtime.d.ts'),
 
       path.join(mockCompilerRoot, 'src', 'components.d.ts'),
     ]);
