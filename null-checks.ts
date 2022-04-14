@@ -4,7 +4,7 @@ const execa = require('execa');
 async function main () {
   try {
     await execa(
-      "npx", [ "tsc" ]
+      "npx", [ "tsc", "--strictNullChecks" ]
     )
   } catch ({ stdout }: any) {
     // if this fails then we still have null check errors to fix!
