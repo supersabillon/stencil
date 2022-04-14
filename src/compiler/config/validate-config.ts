@@ -135,7 +135,7 @@ export const validateConfig = (userConfig: Loose<Config> = {}): {
   }, [] as RegExp[]);
 
   // this is well justified I promise :)
-  let validatedConfig: Config = config;
+  let validatedConfig: Config = config as any;
 
   return {
     config: validatedConfig,
