@@ -1,6 +1,7 @@
+import {Loose} from '@utils';
 import type * as d from '../../declarations';
 
-export const validateWorkers = (config: d.Config) => {
+export const validateWorkers = (config: Loose<d.Config>) => {
   if (typeof config.maxConcurrentWorkers !== 'number') {
     config.maxConcurrentWorkers = 8;
   }

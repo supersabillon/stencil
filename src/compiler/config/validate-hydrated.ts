@@ -1,9 +1,9 @@
 import { Config, HydratedFlag } from '../../declarations';
-import { isString } from '@utils';
+import { isString, Loose } from '@utils';
 
-export const validateHydrated = (config: Config) => {
-  if (config.hydratedFlag === null || config.hydratedFlag === false) {
-    return null;
+export const validateHydrated = (config: Loose<Config>) => {
+  if (config.hydratedFlag === undefined || config.hydratedFlag === null || config.hydratedFlag === false) {
+    return undefined;
   }
 
   const hydratedFlag: HydratedFlag = { ...config.hydratedFlag };

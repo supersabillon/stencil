@@ -1,8 +1,8 @@
 import type * as d from '../../declarations';
-import { buildError, dashToPascalCase, isString } from '@utils';
+import { buildError, dashToPascalCase, isString, Loose } from '@utils';
 import { isOutputTargetDist } from '../output-targets/output-utils';
 
-export const validateNamespace = (c: d.Config, diagnostics: d.Diagnostic[]) => {
+export const validateNamespace = (c: Loose<d.Config>, diagnostics: d.Diagnostic[]) => {
   c.namespace = isString(c.namespace) ? c.namespace : DEFAULT_NAMESPACE;
   c.namespace = c.namespace.trim();
 
@@ -40,8 +40,8 @@ export const validateNamespace = (c: d.Config, diagnostics: d.Diagnostic[]) => {
   }
 };
 
-export const validateDistNamespace = (config: d.Config, diagnostics: d.Diagnostic[]) => {
-  const hasDist = config.outputTargets.some(isOutputTargetDist);
+export const validateDistNamespace = (config: Loose<d.Config>, diagnostics: d.Diagnostic[]) => {
+  const hasDist = (config.outputTargets ?? []).some(isOutputTargetDist);
   if (hasDist) {
     if (!isString(config.namespace) || config.namespace.toLowerCase() === 'app') {
       const err = buildError(diagnostics);

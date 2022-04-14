@@ -1,5 +1,5 @@
-import { Config, ConfigBundle, Diagnostic } from '../../declarations';
-import { buildError, isBoolean, isNumber, isString, sortBy } from '@utils';
+import { Config, ConfigBundle, Diagnostic, ValidatedConfig } from '../../declarations';
+import { buildError, isBoolean, isNumber, isString, Loose, sortBy } from '@utils';
 import { setBooleanConfig } from './config-utils';
 import { validateDevServer } from './validate-dev-server';
 import { validateDistNamespace } from './validate-namespace';
@@ -12,7 +12,9 @@ import { validateRollupConfig } from './validate-rollup-config';
 import { validateTesting } from './validate-testing';
 import { validateWorkers } from './validate-workers';
 
-export const validateConfig = (userConfig?: Config) => {
+export const validateConfig = (userConfig: Loose<Config> = {}): {
+  config: Config, diagnostics: Diagnostic[]
+}=> {
   const config = Object.assign({}, userConfig || {}); // not positive it's json safe
   const diagnostics: Diagnostic[] = [];
 
@@ -20,9 +22,9 @@ export const validateConfig = (userConfig?: Config) => {
   config.flags = JSON.parse(JSON.stringify(config.flags || {}));
 
   // default devMode false
-  if (config.flags.prod) {
+  if (config?.flags?.prod) {
     config.devMode = false;
-  } else if (config.flags.dev) {
+  } else if (config?.flags?.dev) {
     config.devMode = true;
   } else if (!isBoolean(config.devMode)) {
     config.devMode = DEFAULT_DEV_MODE;
@@ -48,7 +50,7 @@ export const validateConfig = (userConfig?: Config) => {
   setBooleanConfig(config, 'sourceMap', null, typeof config.sourceMap === 'undefined' ? false : config.sourceMap);
   setBooleanConfig(config, 'watch', 'watch', false);
   setBooleanConfig(config, 'buildDocs', 'docs', !config.devMode);
-  setBooleanConfig(config, 'buildDist', 'esm', !config.devMode || config.buildEs5);
+  setBooleanConfig(config, 'buildDist', null, !config.devMode || config.buildEs5);
   setBooleanConfig(config, 'profile', 'profile', config.devMode);
   setBooleanConfig(config, 'writeLog', 'log', false);
   setBooleanConfig(config, 'buildAppCore', null, true);
@@ -132,8 +134,11 @@ export const validateConfig = (userConfig?: Config) => {
     return arr;
   }, [] as RegExp[]);
 
+  // this is well justified I promise :)
+  let validatedConfig: Config = config;
+
   return {
-    config,
+    config: validatedConfig,
     diagnostics,
   };
 };

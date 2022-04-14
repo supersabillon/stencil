@@ -1,7 +1,8 @@
 import type * as d from '../../declarations';
 import { isAbsolute, join } from 'path';
+import {Loose} from '@utils';
 
-export const validatePaths = (config: d.Config) => {
+export const validatePaths = (config: Loose<d.Config>) => {
   if (typeof config.rootDir !== 'string') {
     config.rootDir = '/';
   }

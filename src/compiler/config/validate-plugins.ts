@@ -1,7 +1,7 @@
 import type * as d from '../../declarations';
-import { buildWarn } from '@utils';
+import { buildWarn, Loose } from '@utils';
 
-export const validatePlugins = (config: d.Config, diagnostics: d.Diagnostic[]) => {
+export const validatePlugins = (config: Loose<d.Config>, diagnostics: d.Diagnostic[]) => {
   const userPlugins = config.plugins;
 
   if (!config.rollupPlugins) {

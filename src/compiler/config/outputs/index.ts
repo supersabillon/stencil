@@ -1,5 +1,5 @@
 import type * as d from '../../../declarations';
-import { buildError, buildWarn } from '@utils';
+import { buildError, buildWarn, Loose } from '@utils';
 import { DIST_CUSTOM_ELEMENTS_BUNDLE, VALID_TYPES } from '../../output-targets/output-utils';
 import { validateCollection } from './validate-collection';
 import { validateCustomElement } from './validate-custom-element';
@@ -13,7 +13,7 @@ import { validateStats } from './validate-stats';
 import { validateWww } from './validate-www';
 import { validateCustomElementBundle } from './validate-custom-element-bundle';
 
-export const validateOutputTargets = (config: d.Config, diagnostics: d.Diagnostic[]) => {
+export const validateOutputTargets = (config: Loose<d.Config>, diagnostics: d.Diagnostic[]) => {
   const userOutputs = (config.outputTargets || []).slice();
 
   userOutputs.forEach((outputTarget) => {

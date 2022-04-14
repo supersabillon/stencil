@@ -83,7 +83,7 @@ export interface StencilConfig {
    *
    * The outputTargets config is an array of objects, with types of www and dist.
    */
-  outputTargets?: OutputTarget[];
+  outputTargets: OutputTarget[];
 
   /**
    * The plugins config can be used to add your own rollup plugins.
@@ -233,7 +233,7 @@ export interface StencilConfig {
   devInspector?: boolean;
   devServer?: StencilDevServerConfig;
   enableCacheStats?: boolean;
-  sys?: CompilerSystem;
+  sys: CompilerSystem;
   tsconfig?: string;
   validateTypes?: boolean;
   /**
@@ -244,6 +244,11 @@ export interface StencilConfig {
   watchIgnoredRegex?: RegExp | RegExp[];
   excludeUnusedDependencies?: boolean;
   stencilCoreResolvedId?: string;
+}
+
+export interface ValidatedConfig extends Config {
+  sys: CompilerSystem;
+  rootDir: string;
 }
 
 export interface ConfigExtras {
@@ -343,7 +348,7 @@ export interface Config extends StencilConfig {
   flags?: ConfigFlags;
   fsNamespace?: string;
   logLevel?: LogLevel;
-  rootDir?: string;
+  rootDir: string;
   packageJsonFilePath?: string;
   suppressLogs?: boolean;
   profile?: boolean;
