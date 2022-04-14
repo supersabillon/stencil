@@ -2,6 +2,7 @@ import type * as d from '@stencil/core/internal';
 import { emptyDir, fileExists, mkDir, readDir, readFile, readFileBuffer, rmDir, writeFile } from './screenshot-fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
+import {DEFAULT_ALLOWABLE_MISMATCHED_PIXELS, DEFAULT_PIXEL_MATCH_THRESHOLD} from 'src/compiler/config/validate-testing';
 
 export class ScreenshotConnector implements d.ScreenshotConnector {
   rootDir: string;
@@ -38,16 +39,16 @@ export class ScreenshotConnector implements d.ScreenshotConnector {
 
     this.buildId = opts.buildId;
     this.buildMessage = opts.buildMessage || '';
-    this.buildAuthor = opts.buildAuthor;
-    this.buildUrl = opts.buildUrl;
-    this.previewUrl = opts.previewUrl;
+    this.buildAuthor = opts.buildAuthor || '';
+    this.buildUrl = opts.buildUrl || '';
+    this.previewUrl = opts.previewUrl || '';
     (this.buildTimestamp = typeof opts.buildTimestamp === 'number' ? opts.buildTimestamp : Date.now()),
       (this.cacheDir = opts.cacheDir);
     this.packageDir = opts.packageDir;
     this.rootDir = opts.rootDir;
     this.appNamespace = opts.appNamespace;
-    this.waitBeforeScreenshot = opts.waitBeforeScreenshot;
-    this.pixelmatchModulePath = opts.pixelmatchModulePath;
+    this.waitBeforeScreenshot = opts.waitBeforeScreenshot ?? 10;
+    this.pixelmatchModulePath = opts.pixelmatchModulePath ?? '';
 
     if (!opts.logger) {
       throw new Error(`logger option required`);
@@ -70,9 +71,9 @@ export class ScreenshotConnector implements d.ScreenshotConnector {
     }
 
     this.updateMaster = !!opts.updateMaster;
-    this.allowableMismatchedPixels = opts.allowableMismatchedPixels;
-    this.allowableMismatchedRatio = opts.allowableMismatchedRatio;
-    this.pixelmatchThreshold = opts.pixelmatchThreshold;
+    this.allowableMismatchedPixels = opts.allowableMismatchedPixels ?? DEFAULT_ALLOWABLE_MISMATCHED_PIXELS
+    this.allowableMismatchedRatio = opts.allowableMismatchedRatio ?? 0.5;
+    this.pixelmatchThreshold = opts.pixelmatchThreshold ?? DEFAULT_PIXEL_MATCH_THRESHOLD;
 
     this.logger.debug(`screenshot build: ${this.buildId}, ${this.buildMessage}, updateMaster: ${this.updateMaster}`);
     this.logger.debug(
@@ -115,17 +116,15 @@ export class ScreenshotConnector implements d.ScreenshotConnector {
   }
 
   async pullMasterBuild() {
-    /**/
+    /*
+     */
   }
 
   async getMasterBuild() {
-    let masterBuild: d.ScreenshotBuild = null;
-
     try {
-      masterBuild = JSON.parse(await readFile(this.masterBuildFilePath));
+      const masterBuild: d.ScreenshotBuild = JSON.parse(await readFile(this.masterBuildFilePath));
+      return masterBuild
     } catch (e) {}
-
-    return masterBuild;
   }
 
   async completeBuild(masterBuild: d.ScreenshotBuild) {
