@@ -27,6 +27,9 @@ export async function runJest(config: d.Config, env: d.E2EProcessEnv) {
     // build up the project paths, which is basically the app's root dir
     const projects = getProjectListFromCLIArgs(config, jestArgv);
 
+    console.log('in the runJest function');
+    console.log(jestArgv);
+
     // run the @jest/core with our data rather than letting the
     // @jest/core parse the args itself
     const { runCLI } = require('@jest/core');

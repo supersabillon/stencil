@@ -40,6 +40,7 @@ function getLegacyJestOptions(): Record<string, boolean | number | string> {
 
 /**
  * Builds the `argv` to be used when programmatically invoking the Jest CLI
+ *
  * @param config the Stencil config to use while generating Jest CLI arguments
  * @returns the arguments to pass to the Jest CLI, wrapped in an object
  */
@@ -56,10 +57,20 @@ export function buildJestArgv(config: d.Config): Config.Argv {
     args.push('--runInBand');
   }
 
+  console.log(1);
+  console.log(args);
+
+
   config.logger.info(config.logger.magenta(`jest args: ${args.join(' ')}`));
 
   let jestArgv = yargs(args).argv as Config.Argv;
   jestArgv = { ...getLegacyJestOptions(), ...jestArgv };
+
+  // jestArgv["testNamePattern"] = 'renders with values'
+
+  console.log("2");
+  console.log(jestArgv);
+
   jestArgv.config = buildJestConfig(config);
 
   if (typeof jestArgv.maxWorkers === 'string') {

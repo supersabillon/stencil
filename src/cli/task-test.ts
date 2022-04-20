@@ -1,6 +1,12 @@
 import type { Config, TestingRunOptions } from '../declarations';
 import { IS_NODE_ENV } from '../compiler/sys/environment';
 
+/**
+ * Task for running tests.
+ *
+ * @param config the user-supplied Config. We've gotta have this so we can figure out what to run
+ * and where it is.
+ */
 export const taskTest = async (config: Config) => {
   if (!IS_NODE_ENV) {
     config.logger.error(`"test" command is currently only implemented for a NodeJS environment`);
