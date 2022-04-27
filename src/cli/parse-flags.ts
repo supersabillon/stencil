@@ -178,8 +178,6 @@ const BOOLEAN_ARG_OPTS = [
   'check-version',
   'ci',
   'compare',
-  'coverage',
-  'debug',
   'dev',
   'devtools',
   'docs',
@@ -194,9 +192,9 @@ const BOOLEAN_ARG_OPTS = [
   'prerender-external',
   'prod',
   'profile',
+  'service-worker',
   'screenshot',
   'serve',
-  'service-worker',
   'skip-node-check',
   'spec',
   'ssr',
@@ -204,8 +202,31 @@ const BOOLEAN_ARG_OPTS = [
   'update-screenshot',
   'verbose',
   'version',
-  'watch',
-  'watchAll',
+  // Jest CLI options
+  //
+  // you can generate these programmatically (although still somewhat manually) by running
+  // the following in a node shell:
+  //
+  // ```js 
+  // const fs = require("fs")
+  //
+  // function pbcopy(data) {
+  //   const proc = require('child_process').spawn('pbcopy');
+  //   proc.stdin.write(data);
+  //   proc.stdin.end();
+  // }
+  //
+  // const exports = {}
+  //
+  // eval(String(fs.readFileSync("./node_modules/jest-cli/build/cli/args.js")))
+  //
+  // let booleanOptions = Object.entries(exports.options)
+  //   .filter(([k, v]) => v.type === "boolean")
+  //   .map(([k]) = k)
+  //
+  // pbcopy(JSON.stringify(booleanOptions))
+  // ```
+"all","automock","bail","cache","changedFilesWithAncestor","ci","clearCache","clearMocks","collectCoverage","color","colors","coverage","debug","detectLeaks","detectOpenHandles","errorOnDeprecated","expand","findRelatedTests","forceExit","init","injectGlobals","json","lastCommit","listTests","logHeapUsage","noStackTrace","notify","onlyChanged","onlyFailures","passWithNoTests","resetMocks","resetModules","restoreMocks","runInBand","runTestsByPath","showConfig","silent","skipFilter","testLocationInResults","updateSnapshot","useStderr","verbose","version","watch","watchAll","watchman"
 ] as const;
 
 type BooleanArgOpt = ArrayValuesAsUnion<typeof BOOLEAN_ARG_OPTS>;
@@ -250,3 +271,4 @@ const getNpmConfigEnvArgs = (sys: CompilerSystem) => {
   } catch (e) {}
   return args;
 };
+

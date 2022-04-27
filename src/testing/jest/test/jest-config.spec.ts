@@ -117,6 +117,20 @@ describe('jest-config', () => {
     expect(jestArgv._).toEqual(['hello.spec.ts']);
   });
 
+  it('should pass spec arg alongside coverage to jest', () => {
+    const args = ['test', '--coverage', 'hello.spec.ts'];
+    const config = mockConfig();
+    config.flags = parseFlags(args, config.sys);
+    config.testing = {};
+
+    expect(config.flags.args).toEqual(['--coverage', 'hello.spec.ts']);
+    expect(config.flags.unknownArgs).toEqual(['hello.spec.ts']);
+
+    const jestArgv = buildJestArgv(config);
+    expect(jestArgv._).toEqual(['hello.spec.ts']);
+    expect(jestArgv.coverage).toBeTruthy()
+  });
+
   it('pass test config to jest', () => {
     const args = ['test'];
     const config = mockConfig();

@@ -22,11 +22,25 @@ describe('parseFlags', () => {
     expect(flags.args[2]).toBe('--coverage');
     expect(flags.args[3]).toBe('--reporters');
     expect(flags.args[4]).toBe('test.spec.ts');
-    expect(flags.knownArgs).toEqual(['--address', '127.0.0.1']);
-    expect(flags.unknownArgs[0]).toBe('--coverage');
-    expect(flags.unknownArgs[1]).toBe('--reporters');
-    expect(flags.unknownArgs[2]).toBe('test.spec.ts');
+    expect(flags.knownArgs).toEqual(['--coverage', '--address', '127.0.0.1']);
+    expect(flags.unknownArgs[0]).toBe('--reporters');
+    expect(flags.unknownArgs[1]).toBe('test.spec.ts');
   });
+
+  it('should support specifying a test file and --coverage', () => {
+    args.push('test', '--e2e', '--spec', '--coverage', 'my-component.spec.ts')
+
+    const flags = parseFlags(args, sys)
+    expect(flags.task).toBe("test")
+    expect(flags.args).toEqual([
+      "--e2e",
+      "--spec",
+      "--coverage",
+      "my-component.spec.ts"
+    ])
+    // expect(floags.kno
+
+  })
 
   it('should use cli args, no npm cmds', () => {
     // user command line args

@@ -22,8 +22,9 @@ export async function runJest(config: d.Config, env: d.E2EProcessEnv) {
     }
     config.logger.debug(`default timeout: ${env.__STENCIL_DEFAULT_TIMEOUT__}`);
 
-    // build up our args from our already know list of args in the config
+    // build up our args from our list of already known args in the config
     const jestArgv = buildJestArgv(config);
+
     // build up the project paths, which is basically the app's root dir
     const projects = getProjectListFromCLIArgs(config, jestArgv);
 
