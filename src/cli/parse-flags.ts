@@ -178,6 +178,7 @@ const BOOLEAN_ARG_OPTS = [
   'check-version',
   'ci',
   'compare',
+  'coverage',
   'debug',
   'dev',
   'devtools',
@@ -193,9 +194,9 @@ const BOOLEAN_ARG_OPTS = [
   'prerender-external',
   'prod',
   'profile',
-  'service-worker',
   'screenshot',
   'serve',
+  'service-worker',
   'skip-node-check',
   'spec',
   'ssr',
@@ -204,6 +205,7 @@ const BOOLEAN_ARG_OPTS = [
   'verbose',
   'version',
   'watch',
+  'watchAll',
 ] as const;
 
 type BooleanArgOpt = ArrayValuesAsUnion<typeof BOOLEAN_ARG_OPTS>;

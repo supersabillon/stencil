@@ -60,7 +60,6 @@ export function buildJestArgv(config: d.Config): Config.Argv {
   console.log(1);
   console.log(args);
 
-
   config.logger.info(config.logger.magenta(`jest args: ${args.join(' ')}`));
 
   let jestArgv = yargs(args).argv as Config.Argv;
@@ -68,10 +67,14 @@ export function buildJestArgv(config: d.Config): Config.Argv {
 
   // jestArgv["testNamePattern"] = 'renders with values'
 
-  console.log("2");
+  console.log('2');
   console.log(jestArgv);
+  console.log(jestArgv.config);
 
   jestArgv.config = buildJestConfig(config);
+
+  console.log('3');
+  console.log(jestArgv.config);
 
   if (typeof jestArgv.maxWorkers === 'string') {
     try {
