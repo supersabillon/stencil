@@ -28,19 +28,13 @@ describe('parseFlags', () => {
   });
 
   it('should support specifying a test file and --coverage', () => {
-    args.push('test', '--e2e', '--spec', '--coverage', 'my-component.spec.ts')
+    args.push('test', '--e2e', '--spec', '--coverage', 'my-component.spec.ts');
 
-    const flags = parseFlags(args, sys)
-    expect(flags.task).toBe("test")
-    expect(flags.args).toEqual([
-      "--e2e",
-      "--spec",
-      "--coverage",
-      "my-component.spec.ts"
-    ])
+    const flags = parseFlags(args, sys);
+    expect(flags.task).toBe('test');
+    expect(flags.args).toEqual(['--e2e', '--spec', '--coverage', 'my-component.spec.ts']);
     // expect(floags.kno
-
-  })
+  });
 
   it('should use cli args, no npm cmds', () => {
     // user command line args

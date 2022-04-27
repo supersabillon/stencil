@@ -1,5 +1,6 @@
 import type { CompilerSystem, ConfigFlags, TaskCommand } from '../declarations';
 import { dashToPascalCase } from '@utils';
+import { JEST_BOOLEAN_OPTS, JEST_STRING_OPTS } from '../testing/jest/jest-cli-options'
 
 export const parseFlags = (args: string[], sys?: CompilerSystem): ConfigFlags => {
   const flags: ConfigFlags = {
@@ -202,31 +203,7 @@ const BOOLEAN_ARG_OPTS = [
   'update-screenshot',
   'verbose',
   'version',
-  // Jest CLI options
-  //
-  // you can generate these programmatically (although still somewhat manually) by running
-  // the following in a node shell:
-  //
-  // ```js 
-  // const fs = require("fs")
-  //
-  // function pbcopy(data) {
-  //   const proc = require('child_process').spawn('pbcopy');
-  //   proc.stdin.write(data);
-  //   proc.stdin.end();
-  // }
-  //
-  // const exports = {}
-  //
-  // eval(String(fs.readFileSync("./node_modules/jest-cli/build/cli/args.js")))
-  //
-  // let booleanOptions = Object.entries(exports.options)
-  //   .filter(([k, v]) => v.type === "boolean")
-  //   .map(([k]) = k)
-  //
-  // pbcopy(JSON.stringify(booleanOptions))
-  // ```
-"all","automock","bail","cache","changedFilesWithAncestor","ci","clearCache","clearMocks","collectCoverage","color","colors","coverage","debug","detectLeaks","detectOpenHandles","errorOnDeprecated","expand","findRelatedTests","forceExit","init","injectGlobals","json","lastCommit","listTests","logHeapUsage","noStackTrace","notify","onlyChanged","onlyFailures","passWithNoTests","resetMocks","resetModules","restoreMocks","runInBand","runTestsByPath","showConfig","silent","skipFilter","testLocationInResults","updateSnapshot","useStderr","verbose","version","watch","watchAll","watchman"
+  ...JEST_BOOLEAN_OPTS,
 ] as const;
 
 type BooleanArgOpt = ArrayValuesAsUnion<typeof BOOLEAN_ARG_OPTS>;
@@ -243,6 +220,7 @@ const STRING_ARG_OPTS = [
   'log-level',
   'root',
   'screenshot-connector',
+  ...JEST_STRING_OPTS
 ] as const;
 
 type StringArgOpt = ArrayValuesAsUnion<typeof STRING_ARG_OPTS>;
@@ -271,4 +249,3 @@ const getNpmConfigEnvArgs = (sys: CompilerSystem) => {
   } catch (e) {}
   return args;
 };
-

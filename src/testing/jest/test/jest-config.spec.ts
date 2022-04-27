@@ -128,7 +128,7 @@ describe('jest-config', () => {
 
     const jestArgv = buildJestArgv(config);
     expect(jestArgv._).toEqual(['hello.spec.ts']);
-    expect(jestArgv.coverage).toBeTruthy()
+    expect(jestArgv.coverage).toBeTruthy();
   });
 
   it('pass test config to jest', () => {
