@@ -9,7 +9,7 @@ describe('validateDocs', () => {
     userConfig = mockConfig();
   });
 
-  it('readme-docs-dir', () => {
+  it('readme docs dir', () => {
     userConfig.flags.docs = true;
     userConfig.outputTargets = [
       {

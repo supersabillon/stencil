@@ -1,7 +1,6 @@
 const { readFileSync, writeFileSync } = require('fs');
 
-// this sticks everything exported in this module onto the export
-// thing we declare above
+// this is a commonjs module, so the stuff in it will be stuck on `exports`
 eval(String(readFileSync('./node_modules/jest-cli/build/cli/args.js')));
 
 function filterOptions(type) {
