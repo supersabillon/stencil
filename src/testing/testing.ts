@@ -2,12 +2,12 @@ import type {
   CompilerBuildResults,
   Compiler,
   CompilerWatcher,
-  Config,
   DevServer,
   E2EProcessEnv,
   OutputTargetWww,
   Testing,
   TestingRunOptions,
+  ValidatedConfig,
 } from '@stencil/core/internal';
 import { getAppScriptUrl, getAppStyleUrl } from './testing-utils';
 import { hasError } from '@utils';
@@ -17,7 +17,7 @@ import { startPuppeteerBrowser } from './puppeteer/puppeteer-browser';
 import { start } from '@stencil/core/dev-server';
 import type * as puppeteer from 'puppeteer';
 
-export const createTesting = async (config: Config): Promise<Testing> => {
+export const createTesting = async (config: ValidatedConfig): Promise<Testing> => {
   config = setupTestingConfig(config);
 
   const { createCompiler } = require('../compiler/stencil.js');
@@ -183,7 +183,7 @@ export const createTesting = async (config: Config): Promise<Testing> => {
   };
 };
 
-function setupTestingConfig(config: Config) {
+function setupTestingConfig(config: ValidatedConfig): ValidatedConfig {
   config.buildEs5 = false;
   config.devMode = true;
   config.minifyCss = false;

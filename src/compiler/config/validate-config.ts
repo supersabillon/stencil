@@ -1,4 +1,4 @@
-import { Config, ConfigBundle, ConfigFlags, Diagnostic, UnvalidatedConfig, ValidatedConfig } from '../../declarations';
+import { ConfigBundle, ConfigFlags, Diagnostic, UnvalidatedConfig, ValidatedConfig } from '../../declarations';
 import { buildError, isBoolean, isNumber, isString, sortBy } from '@utils';
 import { setBooleanConfig } from './config-utils';
 import { validateDevServer } from './validate-dev-server';

@@ -2199,7 +2199,7 @@ export interface LoadConfigInit {
  * operations around the codebase.
  */
 export interface LoadConfigResults {
-  config: UnvalidatedConfig;
+  config: ValidatedConfig;
   diagnostics: Diagnostic[];
   tsconfig: {
     path: string;
