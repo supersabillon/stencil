@@ -1,4 +1,4 @@
-import { Config, ConfigBundle, Diagnostic, UnvalidatedConfig } from '../../declarations';
+import { Config, ConfigBundle, ConfigFlags, Diagnostic, UnvalidatedConfig, ValidatedConfig } from '../../declarations';
 import { buildError, isBoolean, isNumber, isString, sortBy } from '@utils';
 import { setBooleanConfig } from './config-utils';
 import { validateDevServer } from './validate-dev-server';
@@ -11,6 +11,7 @@ import { validatePlugins } from './validate-plugins';
 import { validateRollupConfig } from './validate-rollup-config';
 import { validateTesting } from './validate-testing';
 import { validateWorkers } from './validate-workers';
+import {createLogger} from '../sys/logger/console-logger';
 
 /**
  * Validate a Config object, ensuring that all its field are present and
@@ -23,14 +24,18 @@ import { validateWorkers } from './validate-workers';
 export const validateConfig = (
   userConfig: UnvalidatedConfig = {}
 ): {
-  config: Config;
+  config: ValidatedConfig;
   diagnostics: Diagnostic[];
 } => {
-  const config = Object.assign({}, userConfig || {}); // not positive it's json safe
   const diagnostics: Diagnostic[] = [];
 
-  // copy flags (we know it'll be json safe)
-  config.flags = JSON.parse(JSON.stringify(config.flags || {}));
+  const config: ValidatedConfig = {
+    ...userConfig,
+    flags: getConfigFlags(userConfig),
+    logger: userConfig.logger || createLogger(),
+    extras: userConfig.extras || {},
+    hydratedFlag : validateHydrated(userConfig),
+  };
 
   // default devMode false
   if (config.flags.prod) {
@@ -41,7 +46,6 @@ export const validateConfig = (
     config.devMode = DEFAULT_DEV_MODE;
   }
 
-  config.extras = config.extras || {};
   config.extras.appendChildSlotFix = !!config.extras.appendChildSlotFix;
   config.extras.cloneNodeFix = !!config.extras.cloneNodeFix;
   config.extras.cssVarsShim = !!config.extras.cssVarsShim;
@@ -113,8 +117,6 @@ export const validateConfig = (
   // testing
   validateTesting(config, diagnostics);
 
-  // hydrate flag
-  config.hydratedFlag = validateHydrated(config);
 
   // bundles
   if (Array.isArray(config.bundles)) {
@@ -155,3 +157,7 @@ const DEFAULT_DEV_MODE = false;
 const DEFAULT_HASHED_FILENAME_LENTH = 8;
 const MIN_HASHED_FILENAME_LENTH = 4;
 const MAX_HASHED_FILENAME_LENTH = 32;
+
+function getConfigFlags (config: UnvalidatedConfig): ConfigFlags {
+  return JSON.parse(JSON.stringify(config.flags || {}))
+}

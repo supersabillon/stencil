@@ -301,6 +301,11 @@ describe('validation', () => {
     expect(config.outputTargets.some((o) => o.type === 'www')).toBe(true);
   });
 
+  it("should have a logger", () => {
+    const { config } = validateConfig({});
+    expect(config.logger).toBeDefined()
+  });
+
   it('should error for invalid outputTarget type', () => {
     userConfig.outputTargets = [
       {

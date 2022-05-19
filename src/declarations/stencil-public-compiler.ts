@@ -394,6 +394,16 @@ type Loose<T extends Object> = Record<string, any> & Partial<T>;
  */
 export type UnvalidatedConfig = Loose<Config>;
 
+/**
+ * A Stencil configuration which has been validated to include a series of properties.
+*/
+export interface ValidatedConfig extends Config {
+  flags: Config["flags"]
+  logger: Config["logger"]
+  extras: Config["extras"]
+  hydratedFlag: Config["hydratedFlag"]
+}
+
 export interface HydratedFlag {
   /**
    * Defaults to `hydrated`.

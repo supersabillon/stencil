@@ -15,7 +15,7 @@ import { validateConfig } from './validate-config';
 import { validateTsConfig } from '../sys/typescript/typescript-config';
 import ts from 'typescript';
 
-export const loadConfig = async (init: LoadConfigInit = {}) => {
+export const loadConfig = async (init: LoadConfigInit = {}): Promise<LoadConfigResults> => {
   const results: LoadConfigResults = {
     config: null,
     diagnostics: [],
