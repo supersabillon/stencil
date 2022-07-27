@@ -563,7 +563,7 @@ export interface DevServerConfig extends StencilDevServerConfig {
   srcIndexHtml?: string;
 }
 
-type StrictDevServerConfigFields = 'address' | 'root'
+type StrictDevServerConfigFields = 'address' | 'root';
 
 export type ValidatedDevServerConfig = RequireFields<DevServerConfig, StrictDevServerConfigFields>;
 
