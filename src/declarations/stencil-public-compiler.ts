@@ -418,7 +418,7 @@ type StrictConfigFields = 'flags' | 'logger' | 'outputTargets' | 'sys' | 'testin
  * validations have occurred at runtime.
  */
 export type ValidatedConfig = RequireFields<Config, StrictConfigFields> & {
-  devServer?: ValidatedDevServerConfig | undefined
+  devServer?: ValidatedDevServerConfig | undefined;
 };
 
 export interface HydratedFlag {
