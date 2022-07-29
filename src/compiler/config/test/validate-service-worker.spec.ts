@@ -9,6 +9,7 @@ describe('validateServiceWorker', () => {
 
   let outputTarget: d.OutputTargetWww;
 
+  // TODO(NOW): Revisit why this isn't using the mock, comment it
   beforeEach(() => {
     config = {
       fsNamespace: 'app',
@@ -17,6 +18,7 @@ describe('validateServiceWorker', () => {
       flags: createConfigFlags(),
       logger: mockLogger(),
       outputTargets: [],
+      extras: {},
     };
   });
 

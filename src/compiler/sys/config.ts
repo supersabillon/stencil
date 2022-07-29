@@ -8,6 +8,7 @@ export const getConfig = (userConfig: d.Config): d.ValidatedConfig => {
   const logger = userConfig.logger ?? createLogger();
   const config: d.ValidatedConfig = {
     ...userConfig,
+    extras: userConfig.extras ?? {},
     flags: createConfigFlags(userConfig.flags ?? {}),
     logger,
     outputTargets: userConfig.outputTargets ?? [],

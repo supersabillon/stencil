@@ -1,4 +1,11 @@
-import { ConfigBundle, Diagnostic, ValidatedConfig, UnvalidatedConfig, LoadConfigInit } from '../../declarations';
+import {
+  ConfigBundle,
+  ConfigExtras,
+  Diagnostic,
+  ValidatedConfig,
+  UnvalidatedConfig,
+  LoadConfigInit,
+} from '../../declarations';
 import { buildError, isBoolean, isNumber, isString, sortBy } from '@utils';
 import { setBooleanConfig } from './config-utils';
 import { validateDevServer } from './validate-dev-server';
@@ -28,6 +35,29 @@ type ConfigValidationResults = {
   diagnostics: Diagnostic[];
 };
 
+// TODO(NOW): How does this minimize?
+// TODO(NOW): Can I pass something minimal in?
+/**
+ * Pull extra properties off of a user's configuration and coalesce them to the correct type
+ * @param userConfig the user-provided configuration
+ * @returns validated configuration 'extras' fields
+ */
+const setConfigExtras = (userConfig: UnvalidatedConfig): ConfigExtras => {
+  const extras = userConfig.extras || {};
+  extras.appendChildSlotFix = !!extras.appendChildSlotFix;
+  extras.cloneNodeFix = !!extras.cloneNodeFix;
+  extras.cssVarsShim = !!extras.cssVarsShim;
+  extras.dynamicImportShim = !!extras.dynamicImportShim;
+  extras.lifecycleDOMEvents = !!extras.lifecycleDOMEvents;
+  extras.safari10 = !!extras.safari10;
+  extras.scriptDataOpts = !!extras.scriptDataOpts;
+  extras.shadowDomShim = !!extras.shadowDomShim;
+  extras.slotChildNodesFix = !!extras.slotChildNodesFix;
+  extras.initializeNextTick = !!extras.initializeNextTick;
+  extras.tagNameTransform = !!extras.tagNameTransform;
+  return extras;
+};
+
 /**
  * Validate a Config object, ensuring that all its field are present and
  * consistent with our expectations. This function transforms an
@@ -49,6 +79,7 @@ export const validateConfig = (
 
   const validatedConfig: ValidatedConfig = {
     ...config,
+    extras: setConfigExtras(config),
     // flags _should_ be JSON safe
     flags: JSON.parse(JSON.stringify(config.flags || {})),
     logger,
@@ -64,19 +95,6 @@ export const validateConfig = (
   } else if (!isBoolean(validatedConfig.devMode)) {
     validatedConfig.devMode = DEFAULT_DEV_MODE;
   }
-
-  validatedConfig.extras = validatedConfig.extras || {};
-  validatedConfig.extras.appendChildSlotFix = !!validatedConfig.extras.appendChildSlotFix;
-  validatedConfig.extras.cloneNodeFix = !!validatedConfig.extras.cloneNodeFix;
-  validatedConfig.extras.cssVarsShim = !!validatedConfig.extras.cssVarsShim;
-  validatedConfig.extras.dynamicImportShim = !!validatedConfig.extras.dynamicImportShim;
-  validatedConfig.extras.lifecycleDOMEvents = !!validatedConfig.extras.lifecycleDOMEvents;
-  validatedConfig.extras.safari10 = !!validatedConfig.extras.safari10;
-  validatedConfig.extras.scriptDataOpts = !!validatedConfig.extras.scriptDataOpts;
-  validatedConfig.extras.shadowDomShim = !!validatedConfig.extras.shadowDomShim;
-  validatedConfig.extras.slotChildNodesFix = !!validatedConfig.extras.slotChildNodesFix;
-  validatedConfig.extras.initializeNextTick = !!validatedConfig.extras.initializeNextTick;
-  validatedConfig.extras.tagNameTransform = !!validatedConfig.extras.tagNameTransform;
 
   validatedConfig.buildEs5 =
     validatedConfig.buildEs5 === true || (!validatedConfig.devMode && validatedConfig.buildEs5 === 'prod');

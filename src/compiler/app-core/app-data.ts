@@ -2,9 +2,9 @@ import {
   BuildConditionals,
   BuildFeatures,
   ComponentCompilerMeta,
-  Config,
   Module,
   ModuleMap,
+  ValidatedConfig,
 } from '@stencil/core/internal';
 import { unique } from '@utils';
 
@@ -129,7 +129,7 @@ const getModuleImports = (moduleMap: ModuleMap, filePath: string, importedModule
   return importedModules;
 };
 
-export const updateBuildConditionals = (config: Config, b: BuildConditionals) => {
+export const updateBuildConditionals = (config: ValidatedConfig, b: BuildConditionals) => {
   b.isDebug = config.logLevel === 'debug';
   b.isDev = !!config.devMode;
   b.isTesting = !!config._isTesting;

@@ -130,6 +130,7 @@ export const runTask = async (
   const logger = config.logger ?? createLogger();
   const strictConfig: ValidatedConfig = {
     ...config,
+    extras: config.extras ?? {},
     flags: createConfigFlags(config.flags ?? { task }),
     logger,
     outputTargets: config.outputTargets ?? [],
