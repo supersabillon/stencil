@@ -54,7 +54,7 @@ export const loadConfig = async (init: LoadConfigInit = {}): Promise<LoadConfigR
     // attached to a configuration entity, validated or otherwise)
     const sys = init.sys ?? createSystem();
 
-    const loadedConfigFile = await loadConfigFile(sys, results.diagnostics, configPath);
+    const loadedConfigFile: UnvalidatedConfig = await loadConfigFile(sys, results.diagnostics, configPath);
     if (hasError(results.diagnostics)) {
       return results;
     }
