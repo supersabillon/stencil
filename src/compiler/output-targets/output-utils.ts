@@ -14,7 +14,12 @@ export const relativeImport = (pathFrom: string, pathTo: string, ext?: string, a
   return normalizePath(`${relativePath}/${basename(pathTo, ext)}`);
 };
 
-export const getComponentsDtsSrcFilePath = (config: d.Config) => join(config.srcDir, GENERATED_DTS);
+/**
+ * Get the path of a {@link GENERATED_DTS} file in a project's `src` directory
+ * @param config the configuration associated with the current Stencil task
+ * @returns the generated path, e.g. `src/components.d.ts`
+ */
+export const getComponentsDtsSrcFilePath = (config: d.ValidatedConfig) => join(config.srcDir, GENERATED_DTS);
 
 export const getComponentsDtsTypesFilePath = (outputTarget: d.OutputTargetDist | d.OutputTargetDistTypes) =>
   join(outputTarget.typesDir, GENERATED_DTS);

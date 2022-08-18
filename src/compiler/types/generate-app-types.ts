@@ -18,7 +18,7 @@ import { updateStencilTypesImports } from './stencil-types';
  * @returns `true` if the type declaration file written to disk has changed, `false` otherwise
  */
 export const generateAppTypes = async (
-  config: d.Config,
+  config: d.ValidatedConfig,
   compilerCtx: d.CompilerCtx,
   buildCtx: d.BuildCtx,
   destination: string
@@ -64,7 +64,11 @@ export const generateAppTypes = async (
  * @param areTypesInternal determines if non-exported type definitions are being generated or not
  * @returns the contents of the `components.d.ts` file
  */
-const generateComponentTypesFile = (config: d.Config, buildCtx: d.BuildCtx, areTypesInternal: boolean): string => {
+const generateComponentTypesFile = (
+  config: d.ValidatedConfig,
+  buildCtx: d.BuildCtx,
+  areTypesInternal: boolean
+): string => {
   let typeImportData: d.TypesImportData = {};
   const c: string[] = [];
   const allTypes = new Map<string, number>();
