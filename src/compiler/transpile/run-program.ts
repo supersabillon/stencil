@@ -11,8 +11,17 @@ import { updateModule } from '../transformers/static-to-meta/parse-static';
 import { updateStencilTypesImports } from '../types/stencil-types';
 import { validateTranspiledComponents } from './validate-components';
 
+/**
+ * Initiates the actual compilation for TypeScript
+ * @param config the Stencil configuration used for the build
+ * @param compilerCtx the compiler context associated with the build
+ * @param buildCtx the build context associated with the build
+ * @param tsBuilder the manager of the {@link ts.Program} state
+ * @returns true if the type declaration file written to disk has changed as a part of compilation, false otherwise
+ * (including if an error occurred)
+ */
 export const runTsProgram = async (
-  config: d.Config,
+  config: d.ValidatedConfig,
   compilerCtx: d.CompilerCtx,
   buildCtx: d.BuildCtx,
   tsBuilder: ts.BuilderProgram
