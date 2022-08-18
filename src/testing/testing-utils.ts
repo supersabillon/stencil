@@ -61,12 +61,28 @@ export function expectFilesDoNotExist(fs: d.InMemoryFileSystem, filePaths: strin
   }
 }
 
-export function getAppScriptUrl(config: d.Config, browserUrl: string) {
+/**
+ * Get the URL of the file used to bootstrap a Stencil entrypoint for e2e testing.
+ *
+ * The filename to be included in the URL is derived from the namespace of the project. The contents of the loaded file
+ * includes the necessary code to patch the browser and lazily init a project's components
+ *
+ * @param config the Stencil configuration used while running e2e tests
+ * @param browserUrl the base of the URL to be used when serving the JS file (e.g. "http://localhost:3333")
+ * @returns the URL of the entrypoint file, or `null` if global styles are not set
+ */
+export function getAppScriptUrl(config: d.ValidatedConfig, browserUrl: string): string {
   const appFileName = `${config.fsNamespace}.esm.js`;
   return getAppUrl(config, browserUrl, appFileName);
 }
 
-export function getAppStyleUrl(config: d.Config, browserUrl: string) {
+/**
+ * Get the URL of global styles for e2e testing
+ * @param config the Stencil configuration used while running e2e tests
+ * @param browserUrl the base of the URL to be used when serving the CSS file (e.g. "http://localhost:3333")
+ * @returns the URL of the styles file, or `null` if global styles are not set
+ */
+export function getAppStyleUrl(config: d.ValidatedConfig, browserUrl: string): string | null {
   if (config.globalStyle) {
     const appFileName = `${config.fsNamespace}.css`;
     return getAppUrl(config, browserUrl, appFileName);
@@ -74,7 +90,18 @@ export function getAppStyleUrl(config: d.Config, browserUrl: string) {
   return null;
 }
 
-function getAppUrl(config: d.Config, browserUrl: string, appFileName: string) {
+/**
+ * Build a URL to the provided `appFileName` on a local file server to be used for e2e testing purposes.
+ *
+ * This function is agnostic to file types. The extension of the file to be served is expected to be included in
+ * `appFileName`.
+ *
+ * @param config the Stencil configuration used while running e2e tests
+ * @param browserUrl the base of the URL to be used when serving the file (e.g. "http://localhost:3333")
+ * @param appFileName the name of the file to serve
+ * @returns the URL of the file to serve
+ */
+function getAppUrl(config: d.ValidatedConfig, browserUrl: string, appFileName: string): string {
   const wwwOutput = config.outputTargets.find(isOutputTargetWww);
   if (wwwOutput) {
     const appBuildDir = wwwOutput.buildDir;
