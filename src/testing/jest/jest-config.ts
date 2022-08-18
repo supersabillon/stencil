@@ -140,7 +140,13 @@ export function buildJestConfig(config: d.ValidatedConfig): string {
   return JSON.stringify(jestConfig);
 }
 
-export function getProjectListFromCLIArgs(config: d.Config, argv: Config.Argv): Config.Path[] {
+/**
+ * Build a list of projects to run against Jest
+ * @param config the Stencil configuration associated with the current test run
+ * @param argv a set of command line arguments that Jest has received
+ * @returns a list of paths to projects to run Jest on
+ */
+export function getProjectListFromCLIArgs(config: d.ValidatedConfig, argv: Config.Argv): Config.Path[] {
   const projects = argv.projects ? argv.projects : [];
 
   projects.push(config.rootDir);
