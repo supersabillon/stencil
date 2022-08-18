@@ -53,7 +53,7 @@ export const validateConfig = (
     flags: JSON.parse(JSON.stringify(config.flags || {})),
     logger,
     outputTargets: config.outputTargets ?? [],
-    rootDir: config.rootDir ?? '', // TODO: Look at read paths to determine if this is OK
+    rootDir: config.rootDir ?? '/',
     sys: config.sys ?? bootstrapConfig.sys ?? createSystem({ logger }),
     testing: config.testing ?? {},
   };
