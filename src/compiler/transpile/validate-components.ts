@@ -2,13 +2,31 @@ import type * as d from '../../declarations';
 import { buildError } from '@utils';
 import { relative } from 'path';
 
-export const validateTranspiledComponents = (config: d.Config, buildCtx: d.BuildCtx) => {
+/**
+ * Perform a series of validations on the components in the current build context
+ * @param config the Stencil configuration associated with the current build
+ * @param buildCtx the current build context
+ */
+export const validateTranspiledComponents = (config: d.ValidatedConfig, buildCtx: d.BuildCtx): void => {
   for (const cmp of buildCtx.components) {
     validateUniqueTagNames(config, buildCtx, cmp);
   }
 };
 
-const validateUniqueTagNames = (config: d.Config, buildCtx: d.BuildCtx, cmp: d.ComponentCompilerMeta) => {
+/**
+ * Verifies that the tag name for the provided component is unique.
+ *
+ * If the component's tag name is not unique, an error diagnostic is written to the build context
+ *
+ * @param config the Stencil configuration associated with the current build
+ * @param buildCtx the current build context
+ * @param cmp the metadata of the component whose tag name is being tested for uniqueness
+ */
+const validateUniqueTagNames = (
+  config: d.ValidatedConfig,
+  buildCtx: d.BuildCtx,
+  cmp: d.ComponentCompilerMeta
+): void => {
   const tagName = cmp.tagName;
   const cmpsWithTagName = buildCtx.components.filter((c) => c.tagName === tagName);
   if (cmpsWithTagName.length > 1) {
