@@ -13,7 +13,7 @@ import { validateTesting } from './validate-testing';
 import { validateWorkers } from './validate-workers';
 import { createLogger } from '../sys/logger/console-logger';
 import { createSystem } from '../sys/stencil-sys';
-import { createConfigFlags } form '../../cli/config-flags'
+import { createConfigFlags } from '../../cli/config-flags'
 
 /**
  * Represents the results of validating a previously unvalidated configuration
@@ -57,7 +57,10 @@ export const validateConfig = (
     outputTargets: config.outputTargets ?? [],
     sys: config.sys ?? bootstrapConfig.sys ?? createSystem({ logger }),
     testing: config.testing ?? {},
-    devServer: validateDevServer(config, diagnostics, flags)
+    devServer: {
+      address: config.devServer?.address ?? "0.0.0.0",
+      root: config.devServer?.root ?? config.rootDir ?? "/"
+    }
   };
 
   // default devMode false
@@ -140,6 +143,9 @@ export const validateConfig = (
 
   // rollup config
   validateRollupConfig(validatedConfig);
+
+  // dev server
+  validatedConfig.devServer = validateDevServer(validatedConfig, diagnostics)
 
   // testing
   validateTesting(validatedConfig, diagnostics);

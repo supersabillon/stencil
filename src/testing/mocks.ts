@@ -37,6 +37,10 @@ export function mockValidatedConfig(overrides: Partial<ValidatedConfig> = {}): V
     outputTargets: baseConfig.outputTargets ?? [],
     sys: createTestingSystem(),
     testing: {},
+    devServer: {
+      root: "/",
+      address: "0.0.0.0"
+    },
     ...overrides,
   };
 }

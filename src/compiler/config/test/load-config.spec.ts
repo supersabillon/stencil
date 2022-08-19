@@ -3,7 +3,7 @@ import { createSystem } from '../../../compiler/sys/stencil-sys';
 import { loadConfig } from '../load-config';
 import { normalizePath } from '../../../utils';
 import path from 'path';
-import { ConfigFlags } from '../../../cli/config-flags';
+import { ConfigFlags, createConfigFlags } from '../../../cli/config-flags';
 
 describe('load config', () => {
   const configPath = require.resolve('./fixtures/stencil.config.ts');
@@ -39,7 +39,7 @@ describe('load config', () => {
     expect(actualConfig).toBeDefined();
     expect(actualConfig.hashedFileNameLength).toEqual(9);
     // these fields are defined in the config file on disk, and should be present
-    expect<ConfigFlags>(actualConfig.flags).toEqual({ dev: true });
+    expect<ConfigFlags>(actualConfig.flags).toEqual(createConfigFlags({ dev: true }));
     expect(actualConfig.extras).toBeDefined();
     expect(actualConfig.extras!.experimentalImportInjection).toBe(true);
   });
@@ -60,7 +60,7 @@ describe('load config', () => {
     // this field is defined in the config file on disk, and should be present
     expect(actualConfig.hashedFileNameLength).toBe(13);
     // this field should default to an empty object literal, since it wasn't present in the config file
-    expect<ConfigFlags>(actualConfig.flags).toEqual({});
+    expect<ConfigFlags>(actualConfig.flags).toEqual(createConfigFlags());
   });
 
   describe('empty initialization argument', () => {
