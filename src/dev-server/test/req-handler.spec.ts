@@ -11,7 +11,7 @@ import nodeFs from 'fs';
 import type { IncomingMessage, ServerResponse } from 'http';
 import path from 'path';
 
-describe.only('request-handler', () => {
+describe('request-handler', () => {
   let devServerConfig: d.DevServerConfig;
   let serverCtx: d.DevServerContext;
   let sys: d.CompilerSystem;
@@ -25,12 +25,12 @@ describe.only('request-handler', () => {
   beforeEach(async () => {
     sys = createSystem();
 
-    const tmpConfig = mockConfig()
+    const tmpConfig = mockConfig();
     tmpConfig.devServer = {
       devServerDir: normalizePath(path.join(__dirname, '..')),
       root: normalizePath(path.join(root, 'www')),
       basePath: '/',
-    }
+    };
 
     const validated = validateConfig(tmpConfig, mockLoadConfigInit());
 
@@ -40,7 +40,7 @@ describe.only('request-handler', () => {
     await sys.createDir(stencilConfig.devServer.root);
     await sys.writeFile(path.join(stencilConfig.devServer.devServerDir, 'templates', 'directory-index.html'), tmplDir);
 
-    devServerConfig = validateDevServer(stencilConfig, [], stencilConfig.flags);
+    devServerConfig = validateDevServer(stencilConfig, []);
     req = {} as any;
     res = {} as any;
 
