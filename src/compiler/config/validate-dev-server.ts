@@ -7,7 +7,7 @@ import { isOutputTargetWww } from '../output-targets/output-utils';
  * Produce a new, fully-validated dev server configuration based on the dev
  * server configuration found on a Stencil config object. If no dev server
  * config is supplied, this will return `undefined` instead.
- * 
+ *
  * @param validatedConfig a validated config to use
  * @originalConfig the original config supplied by the user
  * @diagnostics an out param for setting diagnostic information
@@ -23,7 +23,9 @@ export const validateDevServer = (
   }
 
   const { flags } = validatedConfig;
-  const { address, addressProtocol, addressPort } = getDevServerAddress(flags.address ?? validatedConfig.devServer?.address);
+  const { address, addressProtocol, addressPort } = getDevServerAddress(
+    flags.address ?? validatedConfig.devServer?.address
+  );
 
   // @ts-ignore
   const devServer: d.ValidatedDevServerConfig = {

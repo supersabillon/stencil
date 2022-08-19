@@ -4,7 +4,7 @@ import { isOutputTargetDocs } from '../compiler/output-targets/output-utils';
 import { startupCompilerLog } from './logs';
 
 export const taskDocs = async (coreCompiler: CoreCompiler, config: ValidatedConfig) => {
-  config.devServer = null;
+  config.devServer = undefined;
   config.outputTargets = config.outputTargets.filter(isOutputTargetDocs);
   config.devMode = true;
 

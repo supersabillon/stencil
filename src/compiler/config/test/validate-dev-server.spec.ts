@@ -5,7 +5,7 @@ import path from 'path';
 import { ConfigFlags, createConfigFlags } from '../../../cli/config-flags';
 import { mockLoadConfigInit } from '@stencil/core/testing';
 
-describe.only('validateDevServer', () => {
+describe('validateDevServer', () => {
   const root = path.resolve('/');
   let inputConfig: d.UnvalidatedConfig;
   let inputDevServerConfig: d.DevServerConfig;
@@ -78,7 +78,6 @@ describe.only('validateDevServer', () => {
 
   it('should default root', () => {
     const { config } = validateConfig(inputConfig, mockLoadConfigInit());
-    console.log(config);
     expect(config.devServer.root).toBe(normalizePath(path.join(root, 'some', 'path', 'www')));
   });
 
