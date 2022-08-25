@@ -19,7 +19,11 @@ import { createLogger } from '../compiler/sys/logger/console-logger';
 import { ValidatedConfig } from '../declarations';
 import { createConfigFlags } from './config-flags';
 
-export const run = async (init: d.CliInitOptions) => {
+/**
+ * Runs the CLI with the given options.
+ * @param init initialization options used to override any defaults provided by Stencil
+ */
+export const run = async (init: d.CliInitOptions): Promise<void> => {
   const { args, logger, sys } = init;
 
   try {

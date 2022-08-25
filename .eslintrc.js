@@ -16,7 +16,7 @@ module.exports = {
       "varsIgnorePattern": "^(h|Fragment)$"
     }],
     /**
-     * Configuration for Jest rules can be found here: 
+     * Configuration for Jest rules can be found here:
      * https://github.com/jest-community/eslint-plugin-jest/tree/main/docs/rules
      */
     "jest/expect-expect": [
@@ -56,7 +56,7 @@ module.exports = {
         // turn this off to not leak function internals/discourage describing them
         checkDestructured: false,
         // always check setters as they should require a parameter (by definition)
-        checkSetters: true
+        checkSetters: true,
       }],
     // rely on TypeScript types to be the source of truth, minimize verbosity in comments
     "jsdoc/require-param-type": ["off"],

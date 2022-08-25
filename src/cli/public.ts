@@ -2,8 +2,11 @@ import type { CliInitOptions, CompilerSystem, Config, Logger, TaskCommand } from
 import type { ConfigFlags } from './config-flags';
 
 /**
- * Runs the CLI with the given options. This is used by Stencil's default `bin/stencil` file,
- * but can be used externally too.
+ * Runs the CLI with the given options.
+ *
+ * This is used by Stencil's default `bin/stencil` file, but can be used externally too.
+ *
+ * @param init initialization options used to override any defaults provided by Stencil
  */
 export declare function run(init: CliInitOptions): Promise<void>;
 
